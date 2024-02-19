@@ -216,7 +216,7 @@ stats = {st:[st.value, st.mod()], dx:[dx.value, dx.mod()], cn:[cn.value, cn.mod(
 armor_class = 10 + dx.mod()
 max_hp = 10 + cn.mod()
 
-print("ასეთია შენი პერსონაჟის ფურველი: ")
+print("ასეთია შენი პერსონაჟის ფურცელი: ")
 
 print("მონაცემები:")
 print("სიძლიერე: " + str(st.value) + " (" + str(st.mod()) + ")")
