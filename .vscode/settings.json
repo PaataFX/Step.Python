@@ -8,5 +8,6 @@
         "ახაისხება",
         "ოპერატორები",
         "პირობითი"
-    ]
+    ],
+    "python.REPL.enableREPLSmartSend": false
 }
