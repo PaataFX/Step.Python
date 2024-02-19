@@ -7,9 +7,13 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/about")
-def about():
-    return "About Home"
+@app.route("/starting")
+def starting():
+    return render_template("starting.html")
+
+@app.route("/cc")
+def cc():
+    return render_template("CC.html")
 
 
 if __name__ == "__main__":
