@@ -25,10 +25,18 @@
                 </h2>
                 <div>
                     <input name="name" type="text" placeholder="შენი რეალური სახელი">
-                    <a href="http://127.0.0.1:5000/starting"><input type="submit" value="→" class="submit"></a>
+                    <input type="submit" value="→" class="submit" onclick="sendToConsole()">
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function sendToConsole() {
+            var name = document.getElementsByName("name")[0].value;
+            window.location.href=("http://127.0.0.1:5000/starting?name=" + encodeURIComponent(name));
+        }
+    </script>
+    
 </body>
 </html>

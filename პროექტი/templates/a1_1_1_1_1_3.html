@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N1_1_1_1_1_3</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/fonts/mg-glaho-drunk-master/css/mg-glaho-drunk.min.css">
+    <link rel="stylesheet" href="../static/fonts/ka-lortkipanidze-master/css/ka-lortkipanidze.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="image_">
+            <img src="../static/images/a1_1_1_1_1_3.jpg" alt="">
+        </div>
+        <div class="text_container">
+            <h3 id="scrollbar">
+                წიგნის გვერდები გადაფურცლე. ბევრი გვერდი თითქოს შეწებებულივით არის ერთმანეთთან, არადა აშკარად ჩანს, რომ მათზე სხვადასხვა ინფორმაცია წერია. სამაგიეროთ, ისეთ გვერდებზე, რომლებიც დაწებებული არაა, ნაცნობი შელოცვები შეგხვდა, მაგრამ ამ სიტუაციაში გამოსაყენებელი არაფერი. როგორ მოიქცევი?
+            </h3>
+            <div class="second_">
+                
+                <ul>
+                    <li>                    
+                        <a href="http://127.0.0.1:5000/a1_1_1_1_1_1">1. რამენაირად გასასვლელი კარის გახსნას ვცდი</a>
+                    </li>
+                    <li>
+                        <a href="http://127.0.0.1:5000/a1_1_1_1_1_2">2. გასასვლელ კარს შელოცვით ავაფეთქებ</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="data">
+                <p id="nameParagraph"></p>
+                <p id="runningTime"></p>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var name = urlParams.get('name');
+        var elapsedTime = parseInt(urlParams.get('time')) || 0; // Get elapsed time from URL, default to 0 if not provided
+        document.getElementById("nameParagraph").textContent = name;
+
+        // Function to update the running time
+        function updateRunningTime() {
+            var minutes = Math.floor(elapsedTime / 60);
+            var seconds = elapsedTime % 60;
+            document.getElementById("runningTime").textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds + "წუთი";
+            elapsedTime++; // Increment elapsed time
+        }
+
+        // Update running time every second
+        setInterval(updateRunningTime, 1000);
+
+        // Update links with name and updated time when clicked
+        var links = document.querySelectorAll("a");
+        links.forEach(function(link) {
+            link.addEventListener("click", function() {
+                var updatedTime = elapsedTime; // Get the current elapsed time when the link is clicked
+                link.href = link.href.split('?')[0] + "?name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(updatedTime);
+            });
+        });
+    }
+</script>
+
+
+</html>

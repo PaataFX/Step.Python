@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N1_1_1_1_1_1</title>
+    <link rel="stylesheet" href="../static/css/styles_1.css">
+    <link rel="stylesheet" href="../static/fonts/mg-glaho-drunk-master/css/mg-glaho-drunk.min.css">
+    <link rel="stylesheet" href="../static/fonts/ka-lortkipanidze-master/css/ka-lortkipanidze.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="image_">
+            <img src="../static/images/a1_1_1_1_1_1.jpg" alt="">
+        </div>
+        <div class="text_container">
+            <h3 id="scrollbar">
+                კარს მიადექი. წინა კარის მსგავსად ღია არ აღმოჩნდა. დაკვირვებით მალევე შეამჩნიე, რომ კარს რაღაც შელოცვა ედო, რომელიც მის უსაფრთხოებას უზრუნველყოფდა. შემდეგ ყურადღება საკეტზე გადაიტანე და მალევე შეამჩნიე, რომ დასაწყისში ნაპოვნი გასაღები კარს ზუსტად უნდა მოერგოს და ასეც აღმოჩნდა. შედეგად შენ გააღწიე პირველი დილეგიდან. მაგრამ აშკარად ხვედბი, რომ ეს ყოველივე მხოლოდ დასაწყისია და წინ დიდი გზა გაქვს გასავლელი.
+            </h3>
+            <div class="data">
+                <p id="nameParagraph"></p>
+                <p id="runningTime"></p>
+            </div>
+            <div class="cc">
+                <a href="http://127.0.0.1:5000/character">თამაშის გასაგრძელებლად შექმენი პერსონაჟი</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var name = urlParams.get('name');
+        var elapsedTime = parseInt(urlParams.get('time')) || 0; // Get elapsed time from URL, default to 0 if not provided
+        document.getElementById("nameParagraph").textContent = name;
+
+        // Display the elapsed time from the URL
+        var minutes = Math.floor(elapsedTime / 60);
+        var seconds = elapsedTime % 60;
+        document.getElementById("runningTime").textContent = "პირველი დილეგიდან გასვლის დროა " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " წუთი";
+        
+        // Update links with name and updated time when clicked
+        var links = document.querySelectorAll("a");
+        links.forEach(function(link) {
+            link.href = link.href.split('?')[0] + "?name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(elapsedTime);
+        });
+    }
+</script>
+
+
+
+</html>

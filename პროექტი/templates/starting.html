@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N1</title>
+    <title>starting</title>
     <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="../static/fonts/mg-glaho-drunk-master/css/mg-glaho-drunk.min.css">
     <link rel="stylesheet" href="../static/fonts/ka-lortkipanidze-master/css/ka-lortkipanidze.min.css">
-
 </head>
+
 <body>
     <div class="container">
         <div class="image_">
@@ -19,22 +19,59 @@
                 თავის ტკივილი გაღვიძებს. თვალების გახელისას ჩაბნელებულ დილეგს ხედავ, ბინძური, ნახევრად დატბორილი იატაკითა და ხის კარით. კუთხეში იატაკზე ზიხარ და ბევრს ვერაფერს ამჩნევ. შელოცვების წიგნი თან არ გაქვს. როგორ მოიქცევი?;
             </h3>
             <div class="second_">
-                <h2>
-                    
-                </h2>
+                
                 <ul>
                     <li>                    
-                        <a href="">1. დავათვალიერებ დილეგს, იქნებ რამე ვიპოვო</a>
+                        <a id="linkToA1" href="http://127.0.0.1:5000/a1">1. დავათვალიერებ დილეგს, იქნებ რამე ვიპოვო</a>
                     </li>
                     <li>                    
-                        <a href="">2. შევეცდები რამის გახსენებას</a>
+                        <a href="http://127.0.0.1:5000/a2">2. შევეცდები რამის გახსენებას</a>
                     </li>
                     <li>
-                        <a href="">3. დავიწყებ ყვირილს, იქნებ ვინმემ გაიგოს</a>
+                        <a href="http://127.0.0.1:5000/a3">3. დავიწყებ ყვირილს, იქნებ ვინმემ გაიგოს</a>
                     </li>
                 </ul>
+            </div class="data">
+            <div class="data">
+                <p id="nameParagraph"></p>
+                <p id="runningTime"></p>
             </div>
         </div>
     </div>
 </body>
+<script>
+    var startTime = Date.now(); // Record the start time when the page loads
+
+    window.onload = function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var name = urlParams.get('name');
+
+        // Function to update the running time
+        function updateRunningTime() {
+            var currentTime = Date.now();
+            var elapsedTime = Math.floor((currentTime - startTime) / 1000); // Convert milliseconds to seconds
+            var minutes = Math.floor(elapsedTime / 60);
+            var seconds = elapsedTime % 60;
+            document.getElementById("runningTime").textContent = minutes + ":" + seconds + " წუთი";
+            // Update links with name and elapsed time
+            var links = document.querySelectorAll("a");
+            links.forEach(function(link) {
+                link.href = link.href.split('?')[0] + "?name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(elapsedTime);
+            });
+        }
+
+        // Update running time every second
+        setInterval(updateRunningTime, 1000);
+
+        // Set name on the page
+        document.getElementById("nameParagraph").textContent = name;
+
+        // Update links with name
+        var links = document.querySelectorAll("a");
+        links.forEach(function(link) {
+            link.href += "?name=" + encodeURIComponent(name);
+        });
+    }
+</script>
+
 </html>
