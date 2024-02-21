@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>character</title>
+    <title>character_page</title>
     <link rel="stylesheet" href="../static/css/styles_last.css">
     <link rel="stylesheet" href="../static/fonts/mg-glaho-drunk-master/css/mg-glaho-drunk.min.css">
     <link rel="stylesheet" href="../static/fonts/ka-lortkipanidze-master/css/ka-lortkipanidze.min.css">
@@ -17,47 +17,60 @@
             <div class="data">
                 <p id="nameParagraph"></p>
                 <p id="runningTime"></p>
-                <p></p>
             </div>
             <div id="abilityScoresContainer">
-                <ul id="abilityScoresList">
-                </ul>
+                <!-- Display received data -->
+                <ul id="abilityScoresList"></ul>
             </div>
         </div>
     </div>
+    </div>
     <script>
+        function translateName(name) {
+            const translations = {
+                human: "ადამიანი",
+                elf: "ელფი",
+                dwarf: "ჯუჯა",
+                fighter: "მებრძოლი",
+                ranger: "რეინჯერი",
+                wizard: "ჯადოქარი"
+            };
+            return translations[name] || name;
+        }
+
         window.onload = function() {
             var urlParams = new URLSearchParams(window.location.search);
             var name = urlParams.get('name');
-            var elapsedTime = parseInt(urlParams.get('time')) || 0; // Get elapsed time from URL, default to 0 if not provided
+            var elapsedTime = parseInt(urlParams.get('time')) || 0;
+
             document.getElementById("nameParagraph").textContent = "მოთამაშის სახელი: " + name;
 
-            // Display the elapsed time from the URL
             var minutes = Math.floor(elapsedTime / 60);
             var seconds = elapsedTime % 60;
             document.getElementById("runningTime").textContent = "შენი დრო იყო " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " წუთი";
-            
-            // Get ability scores from URL parameters
+
             var strength = parseInt(urlParams.get('strength')) || 10;
             var dexterity = parseInt(urlParams.get('dexterity')) || 10;
             var constitution = parseInt(urlParams.get('constitution')) || 10;
             var intelligence = parseInt(urlParams.get('intelligence')) || 10;
             var wisdom = parseInt(urlParams.get('wisdom')) || 10;
             var charisma = parseInt(urlParams.get('charisma')) || 10;
-            var race = urlParams.get('race') || 'Unknown';
-            var playerClass = urlParams.get('class') || 'Unknown';
+            var race = urlParams.get('race') || 'უცნობი';
+            var playerClass = urlParams.get('class') || 'უცნობი';
 
-            // Create list items for ability scores, race, and class
+            race = translateName(race);
+            playerClass = translateName(playerClass);
+
             var abilityScoresList = document.getElementById("abilityScoresList");
             var abilityScores = [
-                { name: "Race", value: race },
-                { name: "Class", value: playerClass },
-                { name: "Strength", score: strength },
-                { name: "Dexterity", score: dexterity },
-                { name: "Constitution", score: constitution },
-                { name: "Intelligence", score: intelligence },
-                { name: "Wisdom", score: wisdom },
-                { name: "Charisma", score: charisma }
+                { name: "რასა", value: race },
+                { name: "კლასი", value: playerClass },
+                { name: "სიძლიერე", score: strength },
+                { name: "მოხერხებულობა", score: dexterity },
+                { name: "გამძლეობა", score: constitution },
+                { name: "ინტელექტი", score: intelligence },
+                { name: "სიბრძნე", score: wisdom },
+                { name: "ქარიზმა", score: charisma }
             ];
 
             abilityScores.forEach(function(score) {
@@ -68,38 +81,6 @@
                     listItem.textContent = score.name + ": " + score.value;
                 }
                 abilityScoresList.appendChild(listItem);
-            });
-
-            // Update links with name and updated time when clicked
-            var links = document.querySelectorAll(".buttonn");
-            links.forEach(function(link) {
-                link.addEventListener("click", function(event) {
-                    var abilityScores = [ // Assuming these are the ability scores
-                        document.getElementById("strength").value,
-                        document.getElementById("dexterity").value,
-                        document.getElementById("constitution").value,
-                        document.getElementById("intelligence").value,
-                        document.getElementById("wisdom").value,
-                        document.getElementById("charisma").value
-                    ];
-
-                    // Construct the URL with ability scores
-                    var url = "http://127.0.0.1:5000/character_page?";
-                    url += "name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(elapsedTime);
-                    url += "&strength=" + encodeURIComponent(abilityScores[0]);
-                    url += "&dexterity=" + encodeURIComponent(abilityScores[1]);
-                    url += "&constitution=" + encodeURIComponent(abilityScores[2]);
-                    url += "&intelligence=" + encodeURIComponent(abilityScores[3]);
-                    url += "&wisdom=" + encodeURIComponent(abilityScores[4]);
-                    url += "&charisma=" + encodeURIComponent(abilityScores[5]);
-                    url += "&race=" + encodeURIComponent(race);
-                    url += "&class=" + encodeURIComponent(playerClass);
-
-                    // Redirect to the constructed URL
-                    window.location.href = url;
-
-                    event.preventDefault(); // Prevent default link behavior
-                });
             });
         }
     </script>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -96,48 +96,47 @@ def a1_1_1_1_1_2():
 def a1_1_1_1_1_3():
     return render_template("a1_1_1_1_1_3.html")
 
-@app.route("/character")
+
+@app.route("/character", methods=['GET', 'POST'])
 def character():
-    # Assuming ability_scores is defined somewhere in your application
-    ability_scores = [10, 12, 14, 8, 13, 15]  # Example values
+    if request.method == 'POST':
+        # Fetching name from form data
+        name = request.form.get('name', 'Unknown')
 
-    # Pass ability_scores to the template
-    return render_template("character.html", ability_scores=ability_scores)
+        # Handle other form data
+        race = request.form['race']
+        player_class = request.form['class']
+        strength = int(request.form['strength'])
+        dexterity = int(request.form['dexterity'])
+        constitution = int(request.form['constitution'])
+        intelligence = int(request.form['intelligence'])
+        wisdom = int(request.form['wisdom'])
+        charisma = int(request.form['charisma'])
+        time = request.form['time']  # Assuming you have a field for time in your form
 
-@app.route("/generate", methods=["POST"])
-def generate():
-    # Get form data
-    race = request.form.get("race")
-    char_class = request.form.get("class")
-    ability_scores = {
-        "strength": int(request.form.get("strength", 10)),  # Default to 10 if value is not provided
-        "dexterity": int(request.form.get("dexterity", 10)),
-        "constitution": int(request.form.get("constitution", 10)),
-        "intelligence": int(request.form.get("intelligence", 10)),
-        "wisdom": int(request.form.get("wisdom", 10)),
-        "charisma": int(request.form.get("charisma", 10))
-    }
+        # Redirect to the character page passing the form data as URL parameters
+        return redirect(url_for('character_page', name=name, race=race, player_class=player_class,
+                                strength=strength, dexterity=dexterity, constitution=constitution,
+                                intelligence=intelligence, wisdom=wisdom, charisma=charisma, time=time))
+    return render_template('character.html')
 
-    # Pass form data to the new HTML page
-    return render_template("character_page.html", race=race, char_class=char_class, ability_scores=ability_scores)
-
-@app.route("/character_page")
+@app.route('/character_page')
 def character_page():
-    # Receive form data passed from the /generate route
-    race = request.args.get("race")
-    char_class = request.args.get("class")
-    ability_scores = {
-        "strength": int(request.args.get("strength", 10)),  # Default to 10 if value is not provided
-        "dexterity": int(request.args.get("dexterity", 10)),
-        "constitution": int(request.args.get("constitution", 10)),
-        "intelligence": int(request.args.get("intelligence", 10)),
-        "wisdom": int(request.args.get("wisdom", 10)),
-        "charisma": int(request.args.get("charisma", 10))
-    }
+    # Fetch URL parameters
+    name = request.args.get('name', 'Unknown')
+    race = request.args.get('race')
+    player_class = request.args.get('class')
+    strength = request.args.get('strength')
+    dexterity = request.args.get('dexterity')
+    constitution = request.args.get('constitution')
+    intelligence = request.args.get('intelligence')
+    wisdom = request.args.get('wisdom')
+    charisma = request.args.get('charisma')
+    time = request.args.get('time')
 
-    # Pass form data to the character_page.html template
-    return render_template("character_page.html", race=race, char_class=char_class, ability_scores=ability_scores)
-
+    return render_template('character_page.html', name=name, race=race, player_class=player_class,
+                            strength=strength, dexterity=dexterity, constitution=constitution,
+                            intelligence=intelligence, wisdom=wisdom, charisma=charisma, time=time)
 
 
 if __name__ == "__main__":

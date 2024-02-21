@@ -22,9 +22,10 @@
                 <p>შექმენი პერსონაჟი</p>
             </div>
             <div class="forma">
-                <form id="characterForm" method="post">
+                <form id="characterForm" method="post" action="/character"> <!-- Changed method to "post" and action to "/character" -->
                     <div>
                         <label for="race"><span class="absc">აირჩიე რასა</span></label>
+                        
                         <select name="race" id="race">
                             <option value="human">ადამიანი</option>
                             <option value="dwarf">ჯუჯა</option>
@@ -74,92 +75,88 @@
                                 <input type="number" name="charisma" id="charisma" min="1" max="20">
                             </div>
                         </div>
-                        
-                        <button id="submitForm" class="buttonn">პერსონაჟის შექმნა</button>
+                        <input type="hidden" name="time" id="time">
+
+                        <button type="submit" id="submitForm" class="buttonn">პერსონაჟის შექმნა</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</body>
-<script>
-    window.onload = function() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var name = urlParams.get('name');
-        var elapsedTime = parseInt(urlParams.get('time')) || 0; // Get elapsed time from URL, default to 0 if not provided
-        document.getElementById("nameParagraph").textContent = "მოთამაშის სახელი: " + name;
-
-        // Display the elapsed time from the URL
-        var minutes = Math.floor(elapsedTime / 60);
-        var seconds = elapsedTime % 60;
-        document.getElementById("runningTime").textContent = "შენი დრო იყო " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " წუთი";
-        
-        // Get ability scores from URL parameters
-        var strength = parseInt(urlParams.get('strength')) || 10;
-        var dexterity = parseInt(urlParams.get('dexterity')) || 10;
-        var constitution = parseInt(urlParams.get('constitution')) || 10;
-        var intelligence = parseInt(urlParams.get('intelligence')) || 10;
-        var wisdom = parseInt(urlParams.get('wisdom')) || 10;
-        var charisma = parseInt(urlParams.get('charisma')) || 10;
-        var race = urlParams.get('race') || 'Unknown';
-        var playerClass = urlParams.get('class') || 'Unknown';
-
-        // Create list items for ability scores, race, and class
-        var abilityScoresList = document.getElementById("abilityScoresList");
-        var abilityScores = [
-            { name: "Race", value: race },
-            { name: "Class", value: playerClass },
-            { name: "Strength", score: strength },
-            { name: "Dexterity", score: dexterity },
-            { name: "Constitution", score: constitution },
-            { name: "Intelligence", score: intelligence },
-            { name: "Wisdom", score: wisdom },
-            { name: "Charisma", score: charisma }
-        ];
-
-        abilityScores.forEach(function(score) {
-            var listItem = document.createElement("li");
-            if (score.score !== undefined) {
-                listItem.textContent = score.name + ": " + score.score;
-            } else {
-                listItem.textContent = score.name + ": " + score.value;
-            }
-            abilityScoresList.appendChild(listItem);
-        });
-        
-
-        // Update form action with name and updated time when submitted
-        var form = document.getElementById("characterForm");
-        form.addEventListener("submit", function(event) {
-            var abilityScores = [ // Assuming these are the ability scores
-                document.getElementById("strength").value,
-                document.getElementById("dexterity").value,
-                document.getElementById("constitution").value,
-                document.getElementById("intelligence").value,
-                document.getElementById("wisdom").value,
-                document.getElementById("charisma").value
+    <script>
+        window.onload = function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var name = urlParams.get('name') || 'Unknown';
+            var elapsedTime = parseInt(urlParams.get('time')) || 0;
+            
+            document.getElementById("nameParagraph").textContent = "მოთამაშის სახელი: " + name;
+            
+            var minutes = Math.floor(elapsedTime / 60);
+            var seconds = elapsedTime % 60;
+            document.getElementById("runningTime").textContent = "შენი დრო იყო " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " წუთი";
+            
+            var strength = parseInt(urlParams.get('strength')) || 10;
+            var dexterity = parseInt(urlParams.get('dexterity')) || 10;
+            var constitution = parseInt(urlParams.get('constitution')) || 10;
+            var intelligence = parseInt(urlParams.get('intelligence')) || 10;
+            var wisdom = parseInt(urlParams.get('wisdom')) || 10;
+            var charisma = parseInt(urlParams.get('charisma')) || 10;
+            var race = urlParams.get('race') || 'Unknown';
+            var playerClass = urlParams.get('player_class') || 'Unknown'; // Changed from 'class' to 'player_class'
+            
+            var abilityScoresList = document.getElementById("abilityScoresList");
+            var abilityScores = [
+                { name: "რასა", value: race },
+                { name: "კლასი", value: playerClass },
+                { name: "სიძლიერე", score: strength },
+                { name: "მოხერხებულობა", score: dexterity },
+                { name: "გამძლეობა", score: constitution },
+                { name: "ინტელექტი", score: intelligence },
+                { name: "სიბრძნე", score: wisdom },
+                { name: "ქარიზმა", score: charisma }
             ];
             
+            abilityScores.forEach(function(score) {
+                var listItem = document.createElement("li");
+                if (score.score !== undefined) {
+                    listItem.textContent = score.name + ": " + score.score;
+                } else {
+                    listItem.textContent = score.name + ": " + score.value;
+                }
+                abilityScoresList.appendChild(listItem);
+            });
             
-            // Construct the URL with ability scores
-            var url = "http://127.0.0.1:5000/character_page?";
-            url += "name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(elapsedTime);
-            url += "&strength=" + encodeURIComponent(abilityScores[0]);
-            url += "&dexterity=" + encodeURIComponent(abilityScores[1]);
-            url += "&constitution=" + encodeURIComponent(abilityScores[2]);
-            url += "&intelligence=" + encodeURIComponent(abilityScores[3]);
-            url += "&wisdom=" + encodeURIComponent(abilityScores[4]);
-            url += "&charisma=" + encodeURIComponent(abilityScores[5]);
-            url += "&race=" + encodeURIComponent(race);
-            url += "&class=" + encodeURIComponent(playerClass);
+            var form = document.getElementById("characterForm");
+            form.addEventListener("submit", function(event) {
+                var abilityScores = [
+                    document.getElementById("strength").value,
+                    document.getElementById("dexterity").value,
+                    document.getElementById("constitution").value,
+                    document.getElementById("intelligence").value,
+                    document.getElementById("wisdom").value,
+                    document.getElementById("charisma").value
+                ];
             
-            // Update form action
-            form.action = url;
-        });
-        document.getElementById("submitButton").addEventListener("click", function() {
-            var url = "http://127.0.0.1:5000/character_page";
-            window.location.href = url;
-        });
-    }
-</script>
+                var url = "/character?";
+                url += "name=" + encodeURIComponent(name) + "&time=" + elapsedTime; // Fixing time parameter
+                url += "&strength=" + encodeURIComponent(abilityScores[0]);
+                url += "&dexterity=" + encodeURIComponent(abilityScores[1]);
+                url += "&constitution=" + encodeURIComponent(abilityScores[2]);
+                url += "&intelligence=" + encodeURIComponent(abilityScores[3]);
+                url += "&wisdom=" + encodeURIComponent(abilityScores[4]);
+                url += "&charisma=" + encodeURIComponent(abilityScores[5]);
+                url += "&race=" + encodeURIComponent(race);
+                url += "&player_class=" + encodeURIComponent(playerClass); // Changed from 'class' to 'player_class'
+            
+                // Update form action
+                form.action = url;
+            });
+            
+            document.getElementById("submitButton").addEventListener("click", function() {
+                var url = "/character_page";
+                window.location.href = url;
+            });
+        }
+    </script>
+</body>
 </html>

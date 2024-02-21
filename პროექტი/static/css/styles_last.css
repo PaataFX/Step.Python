@@ -136,17 +136,9 @@ body {
 #abilityScoresContainer {
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     margin-top: 20px;
-}
-
-#abilityScoresList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#abilityScoresList li {
     font-family: "KA_LORTKIPANIDZE", sans-serif;
     background-color: #6d6d6d20;
     border-radius: 15px;
@@ -156,9 +148,14 @@ body {
     font-size: 16px;
     padding: 10px;
     margin-bottom: 10px;
-    display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#abilityScoresList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 #abilityScoresList li:nth-child(even) {
