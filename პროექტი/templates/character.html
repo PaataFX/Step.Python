@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>character</title>
+    <title>Character</title>
     <link rel="stylesheet" href="../static/css/styles_forma.css">
     <link rel="stylesheet" href="../static/fonts/mg-glaho-drunk-master/css/mg-glaho-drunk.min.css">
     <link rel="stylesheet" href="../static/fonts/ka-lortkipanidze-master/css/ka-lortkipanidze.min.css">
@@ -22,10 +22,9 @@
                 <p>შექმენი პერსონაჟი</p>
             </div>
             <div class="forma">
-                <form id="characterForm" method="post" action="/character"> <!-- Changed method to "post" and action to "/character" -->
+                <form id="characterForm" method="post" action="/character">
                     <div>
                         <label for="race"><span class="absc">აირჩიე რასა</span></label>
-                        
                         <select name="race" id="race">
                             <option value="human">ადამიანი</option>
                             <option value="dwarf">ჯუჯა</option>
@@ -57,7 +56,7 @@
                                 <label for="constitution"><span class="absc">გამძლეობა:</span></label>
                                 <input type="number" name="constitution" id="constitution" min="1" max="20">
                             </div>
-    
+
                             <div class="ravi">
                                 <label for="intelligence"><span class="absc">ინტელექტი:</span></label>
                                 <input type="number" name="intelligence" id="intelligence" min="1" max="20">
@@ -69,13 +68,25 @@
                                 <label for="wisdom"><span class="absc">სიბრძნე:</span></label>
                                 <input type="number" name="wisdom" id="wisdom" min="1" max="20">
                             </div>
-    
+
                             <div class="ravi">
                                 <label for="charisma"><span class="absc">ქარიზმა:</span></label>
                                 <input type="number" name="charisma" id="charisma" min="1" max="20">
                             </div>
                         </div>
-                        <input type="hidden" name="time" id="time">
+                        <input type="hidden" name="name" id="name" value="">
+                        <input type="hidden" name="time" id="time" value="">
+                        
+                        <div class="two">
+                            <div>
+                                <label for="username"><span class="absc">მომხმარებელი:</span></label>
+                                <input type="text" name="username" id="username">
+                            </div>
+                            <div>
+                                <label for="password"><span class="absc">პაროლი:</span></label>
+                                <input type="password" name="password" id="password">
+                            </div>
+                        </div>
 
                         <button type="submit" id="submitForm" class="buttonn">პერსონაჟის შექმნა</button>
                     </div>
@@ -87,76 +98,93 @@
         window.onload = function() {
             var urlParams = new URLSearchParams(window.location.search);
             var name = urlParams.get('name') || 'Unknown';
-            var elapsedTime = parseInt(urlParams.get('time')) || 0;
+            var elapsedTime = parseInt(urlParams.get('time')) || 0; // Get elapsed time from URL, default to 0 if not provided
+            document.getElementById("nameParagraph").textContent = name;
+            document.getElementById("runningTime").textContent = formatTime(elapsedTime); // Set initial running time
+        
+            // Function to format time as mm:ss
+            function formatTime(time) {
+                var minutes = Math.floor(time / 60);
+                var seconds = time % 60;
+                return minutes + ":" + (seconds < 10 ? "0" : "") + seconds + "წუთი";
+            }
             
-            document.getElementById("nameParagraph").textContent = "მოთამაშის სახელი: " + name;
-            
-            var minutes = Math.floor(elapsedTime / 60);
-            var seconds = elapsedTime % 60;
-            document.getElementById("runningTime").textContent = "შენი დრო იყო " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " წუთი";
-            
-            var strength = parseInt(urlParams.get('strength')) || 10;
-            var dexterity = parseInt(urlParams.get('dexterity')) || 10;
-            var constitution = parseInt(urlParams.get('constitution')) || 10;
-            var intelligence = parseInt(urlParams.get('intelligence')) || 10;
-            var wisdom = parseInt(urlParams.get('wisdom')) || 10;
-            var charisma = parseInt(urlParams.get('charisma')) || 10;
-            var race = urlParams.get('race') || 'Unknown';
-            var playerClass = urlParams.get('player_class') || 'Unknown'; // Changed from 'class' to 'player_class'
-            
-            var abilityScoresList = document.getElementById("abilityScoresList");
-            var abilityScores = [
-                { name: "რასა", value: race },
-                { name: "კლასი", value: playerClass },
-                { name: "სიძლიერე", score: strength },
-                { name: "მოხერხებულობა", score: dexterity },
-                { name: "გამძლეობა", score: constitution },
-                { name: "ინტელექტი", score: intelligence },
-                { name: "სიბრძნე", score: wisdom },
-                { name: "ქარიზმა", score: charisma }
-            ];
-            
-            abilityScores.forEach(function(score) {
-                var listItem = document.createElement("li");
-                if (score.score !== undefined) {
-                    listItem.textContent = score.name + ": " + score.score;
-                } else {
-                    listItem.textContent = score.name + ": " + score.value;
-                }
-                abilityScoresList.appendChild(listItem);
-            });
-            
-            var form = document.getElementById("characterForm");
-            form.addEventListener("submit", function(event) {
-                var abilityScores = [
-                    document.getElementById("strength").value,
-                    document.getElementById("dexterity").value,
-                    document.getElementById("constitution").value,
-                    document.getElementById("intelligence").value,
-                    document.getElementById("wisdom").value,
-                    document.getElementById("charisma").value
-                ];
-            
-                var url = "/character?";
-                url += "name=" + encodeURIComponent(name) + "&time=" + elapsedTime; // Fixing time parameter
-                url += "&strength=" + encodeURIComponent(abilityScores[0]);
-                url += "&dexterity=" + encodeURIComponent(abilityScores[1]);
-                url += "&constitution=" + encodeURIComponent(abilityScores[2]);
-                url += "&intelligence=" + encodeURIComponent(abilityScores[3]);
-                url += "&wisdom=" + encodeURIComponent(abilityScores[4]);
-                url += "&charisma=" + encodeURIComponent(abilityScores[5]);
-                url += "&race=" + encodeURIComponent(race);
-                url += "&player_class=" + encodeURIComponent(playerClass); // Changed from 'class' to 'player_class'
-            
-                // Update form action
-                form.action = url;
-            });
-            
-            document.getElementById("submitButton").addEventListener("click", function() {
-                var url = "/character_page";
-                window.location.href = url;
-            });
+            // Function to update the running time
+            function updateRunningTime() {
+                elapsedTime++; // Increment elapsed time
+                document.getElementById("runningTime").textContent = formatTime(elapsedTime); // Update running time display
+            }
+        
+            // Update running time every second
+            // setInterval(updateRunningTime, 1000); // Commented out to stop the continuous running
         }
+        
+        document.getElementById("submitForm").addEventListener("click", function() {
+            // Get selected values from the form
+            var race = document.getElementById("race").value;
+            var playerClass = document.getElementById("class").value;
+            var strength = document.getElementById("strength").value;
+            var dexterity = document.getElementById("dexterity").value;
+            var constitution = document.getElementById("constitution").value;
+            var intelligence = document.getElementById("intelligence").value;
+            var wisdom = document.getElementById("wisdom").value;
+            var charisma = document.getElementById("charisma").value;
+            var time = parseInt(document.getElementById("time").value); // Get time from hidden input
+            var username = document.getElementById("username").value; // Get username from input
+            var password = document.getElementById("password").value; // Get password from input
+        
+            // Validate input fields
+            if (strength === '' || dexterity === '' || constitution === '' || intelligence === '' || wisdom === '' || charisma === '') {
+                alert("Please fill out all numeric fields.");
+                return;
+            }
+        
+            // Construct JSON object with form data
+            var formData = {
+                race: race,
+                class: playerClass,
+                strength: parseInt(strength),
+                dexterity: parseInt(dexterity),
+                constitution: parseInt(constitution),
+                intelligence: parseInt(intelligence),
+                wisdom: parseInt(wisdom),
+                charisma: parseInt(charisma),
+                time: time, // Assign the correct time value
+                username: username, // Add username to the form data
+                password: password, // Add password to the form data
+                name: document.getElementById("name").value // Get name from hidden input
+            };
+        
+            // Send data to Flask backend using fetch API
+            fetch("/character", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to character page passing the form data as URL parameters
+                    window.location.href = "/character_page?" +
+                        "name=" + encodeURIComponent(formData.name) +
+                        "&race=" + encodeURIComponent(formData.race) +
+                        "&class=" + encodeURIComponent(formData.class) +
+                        "&strength=" + encodeURIComponent(formData.strength) +
+                        "&dexterity=" + encodeURIComponent(formData.dexterity) +
+                        "&constitution=" + encodeURIComponent(formData.constitution) +
+                        "&intelligence=" + encodeURIComponent(formData.intelligence) +
+                        "&wisdom=" + encodeURIComponent(formData.wisdom) +
+                        "&charisma=" + encodeURIComponent(formData.charisma) +
+                        "&time=" + encodeURIComponent(formData.time);
+                } else {
+                    console.error("Failed to create character:", response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });        
     </script>
 </body>
 </html>

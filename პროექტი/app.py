@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+import json
 
 app = Flask(__name__)
 
@@ -6,13 +7,9 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-
-
 @app.route("/starting")
 def starting():
     return render_template("starting.html")
-
-
 
 @app.route("/a1")
 def a1():
@@ -26,8 +23,6 @@ def a2():
 def a3():
     return render_template("a3.html")
 
-
-
 @app.route("/a1_1")
 def a1_1():
     return render_template("a1_1.html")
@@ -39,8 +34,6 @@ def a1_2():
 @app.route("/a1_3")
 def a1_3():
     return render_template("a1_3.html")
-
-
 
 @app.route("/a1_1_1")
 def a1_1_1():
@@ -54,8 +47,6 @@ def a1_1_2():
 def a1_1_3():
     return render_template("a1_1_3.html")
 
-
-
 @app.route("/a1_1_1_1")
 def a1_1_1_1():
     return render_template("a1_1_1_1.html")
@@ -67,8 +58,6 @@ def a1_1_1_2():
 @app.route("/a1_1_1_3")
 def a1_1_1_3():
     return render_template("a1_1_1_3.html")
-
-
 
 @app.route("/a1_1_1_1_1")
 def a1_1_1_1_1():
@@ -82,28 +71,10 @@ def a1_1_1_1_2():
 def a1_1_1_1_3():
     return render_template("a1_1_1_1_3.html")
 
-
-
-@app.route("/a1_1_1_1_1_1")
-def a1_1_1_1_1_1():
-    return render_template("a1_1_1_1_1_1.html")
-
-@app.route("/a1_1_1_1_1_2")
-def a1_1_1_1_1_2():
-    return render_template("a1_1_1_1_1_2.html")
-
-@app.route("/a1_1_1_1_1_3")
-def a1_1_1_1_1_3():
-    return render_template("a1_1_1_1_1_3.html")
-
-
 @app.route("/character", methods=['GET', 'POST'])
 def character():
     if request.method == 'POST':
-        # Fetching name from form data
-        name = request.form.get('name', 'Unknown')
-
-        # Handle other form data
+        # Fetching data from form
         race = request.form['race']
         player_class = request.form['class']
         strength = int(request.form['strength'])
@@ -112,13 +83,38 @@ def character():
         intelligence = int(request.form['intelligence'])
         wisdom = int(request.form['wisdom'])
         charisma = int(request.form['charisma'])
-        time = request.form['time']  # Assuming you have a field for time in your form
+        time = request.form['time']
+        username = request.form['username']  # Assuming there's a field for username in your form
+        password = request.form['password']  # Assuming there's a field for password in your form
+
+        # Save character data to a JSON file
+        character_data = {
+            'race': race,
+            'class': player_class,
+            'strength': strength,
+            'dexterity': dexterity,
+            'constitution': constitution,
+            'intelligence': intelligence,
+            'wisdom': wisdom,
+            'charisma': charisma,
+            'time': time,
+            'username': username,
+            'password': password
+        }
+        try:
+            with open('characters.json', 'a') as file:
+                json.dump(character_data, file)
+                file.write('\n')  # Add a newline between each character entry
+        except Exception as e:
+            print(f"Error writing to file: {e}")
 
         # Redirect to the character page passing the form data as URL parameters
-        return redirect(url_for('character_page', name=name, race=race, player_class=player_class,
+        return redirect(url_for('character_page', race=race, player_class=player_class,
                                 strength=strength, dexterity=dexterity, constitution=constitution,
-                                intelligence=intelligence, wisdom=wisdom, charisma=charisma, time=time))
+                                intelligence=intelligence, wisdom=wisdom, charisma=charisma, time=time,
+                                username=username, password=password))
     return render_template('character.html')
+
 
 @app.route('/character_page')
 def character_page():
