@@ -1,4 +1,4 @@
-import random
+import random, json
 
 # კამათლის კლასი
 class Dice:
@@ -225,3 +225,25 @@ print("გამძლეობა: " + str(cn.value) + " (" + str(cn.mod()) + "
 print("ინტელექტი: " + str(nt.value) + " (" + str(nt.mod()) + ")")
 print("სიბრძნე: " + str(wm.value) + " (" + str(wm.mod()) + ")")
 print("ქარიზმა: " + str(ch.value) + " (" + str(ch.mod()) + ")")
+
+# საბოლოო მონაცემები და დეტალები
+character_data = {
+    "race": character_race,
+    "class": character_class,
+    "stats": {
+        "strength": [st.value, st.mod()],
+        "dexterity": [dx.value, dx.mod()],
+        "constitution": [cn.value, cn.mod()],
+        "intelligence": [nt.value, nt.mod()],
+        "wisdom": [wm.value, wm.mod()],
+        "charisma": [ch.value, ch.mod()]
+    },
+    "armor_class": armor_class,
+    "max_hp": max_hp
+}
+
+# json-ში შენახვა
+with open('character_data.json', 'w') as json_file:
+    json.dump(character_data, json_file)
+
+print("პერსონაჟი შენახულია Json-ში")
