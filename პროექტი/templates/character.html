@@ -114,9 +114,6 @@
                 elapsedTime++; // Increment elapsed time
                 document.getElementById("runningTime").textContent = formatTime(elapsedTime); // Update running time display
             }
-        
-            // Update running time every second
-            // setInterval(updateRunningTime, 1000); // Commented out to stop the continuous running
         }
         
         document.getElementById("submitForm").addEventListener("click", function() {
@@ -129,9 +126,9 @@
             var intelligence = document.getElementById("intelligence").value;
             var wisdom = document.getElementById("wisdom").value;
             var charisma = document.getElementById("charisma").value;
-            var time = parseInt(document.getElementById("time").value); // Get time from hidden input
-            var username = document.getElementById("username").value; // Get username from input
-            var password = document.getElementById("password").value; // Get password from input
+            var time = parseInt(document.getElementById("time").value); 
+            var username = document.getElementById("username").value; 
+            var password = document.getElementById("password").value; 
         
             // Validate input fields
             if (strength === '' || dexterity === '' || constitution === '' || intelligence === '' || wisdom === '' || charisma === '') {
