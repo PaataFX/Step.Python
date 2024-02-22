@@ -71,6 +71,18 @@ def a1_1_1_1_2():
 def a1_1_1_1_3():
     return render_template("a1_1_1_1_3.html")
 
+@app.route("/a1_1_1_1_1_1")
+def a1_1_1_1_1_1():
+    return render_template("a1_1_1_1_1_1.html")
+
+@app.route("/a1_1_1_1_1_2")
+def a1_1_1_1_1_2():
+    return render_template("a1_1_1_1_1_2.html")
+
+@app.route("/a1_1_1_1_1_3")
+def a1_1_1_1_1_3():
+    return render_template("a1_1_1_1_1_3.html")
+
 @app.route("/character", methods=['GET', 'POST'])
 def character():
     if request.method == 'POST':
