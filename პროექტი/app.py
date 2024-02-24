@@ -96,8 +96,8 @@ def character():
         wisdom = int(request.form['wisdom'])
         charisma = int(request.form['charisma'])
         time = request.form['time']
-        username = request.form['username']  # Assuming there's a field for username in your form
-        password = request.form['password']  # Assuming there's a field for password in your form
+        username = request.form['username']
+        password = request.form['password']
 
         # Save character data to a JSON file
         character_data = {
@@ -116,11 +116,10 @@ def character():
         try:
             with open('characters.json', 'a') as file:
                 json.dump(character_data, file)
-                file.write('\n')  # Add a newline between each character entry
+                file.write('\n')
         except Exception as e:
             print(f"Error writing to file: {e}")
 
-        # Redirect to the character page passing the form data as URL parameters
         return redirect(url_for('character_page', race=race, player_class=player_class,
                                 strength=strength, dexterity=dexterity, constitution=constitution,
                                 intelligence=intelligence, wisdom=wisdom, charisma=charisma, time=time,
