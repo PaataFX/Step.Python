@@ -1,0 +1,12 @@
+{
+    "questions": [
+        {
+            "question": "what is the color of the sky?",
+            "answer": "Blue"
+        },
+        {
+            "question": "what's your name?",
+            "answer": "Bote"
+        }
+    ]
+}
