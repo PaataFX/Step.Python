@@ -12,5 +12,33 @@
     "python.REPL.enableREPLSmartSend": false,
     "cSpell.enableFiletypes": [
         "!python"
+    ],
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "test",
+            "database": "mysqlsampledatabase",
+            "username": "Paata_FX"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "test",
+            "database": "it_step",
+            "username": "Paata_FX"
+        }
     ]
 }
